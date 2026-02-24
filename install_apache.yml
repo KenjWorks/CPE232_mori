@@ -1,0 +1,22 @@
+---
+- hosts: server_group_1
+  become: true
+  tasks:
+
+  - name: install apache2 & php packages for Ubuntu
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: true
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache2 & php packages for CentOS
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: true
+    when: ansible_distribution == "CentOS"
