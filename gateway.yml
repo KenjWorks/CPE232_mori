@@ -1,0 +1,14 @@
+---
+- hosts: file_server
+  become: true
+  tasks:
+
+  - name: install packages
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: true
+    loop:
+      - nginx
+      - redis-server
+      - ufw
