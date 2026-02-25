@@ -1,0 +1,45 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create group
+    ansible.builtin.group:
+      name: newgroup
+      state: present
+    when: ansible_distribution in ["Ubuntu", "CentOS"]
+
+  - name: create user
+    ansible.builtin.user:
+      name: newuser
+      group: newgroup
+      create_home: true
+      state: present
+    when: ansible_distribution in ["Ubuntu", "CentOS"]
+
+  - name: create directory for group
+    ansible.builtin.file:
+      path: /home/newuser/group_dir
+      state: directory
+      owner: root
+      group: newgroup
+      mode: '770'
+    when: ansible_distribution in ["Ubuntu", "CentOS"]
+
+  - name: create directory for root
+    ansible.builtin.file:
+      path: /home/newuser/root_dir
+      state: directory
+      owner: root
+      group: root
+      mode: '700'
+    when: ansible_distribution in ["Ubuntu", "CentOS"]
+
+  - name: create directory for owner
+    ansible.builtin.file:
+      path: /home/newuser/owner_dir
+      state: directory
+      owner: newuser
+      group: newgroup
+      mode: '750'
+    when: ansible_distribution in ["Ubuntu", "CentOS"]
